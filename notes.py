@@ -1,4 +1,4 @@
-# pylint: disable=locally-disabled,import-error,no-init,too-few-public-methods
+# pylint: disable=locally-disabled,import-error,no-init,too-few-public-methods,broad-except
 """ err-notes: Errbot notes plugin
 """
 
@@ -28,9 +28,12 @@ class Notes(BotPlugin):
     # FIXME: there is probably a variable for the bot prefix - not sure if
     # I can use it here directly, though - might need to match everything
     # here and then check for it inside the function body.
-    @re_botcmd(pattern=r"^([^!].*)")
+    @re_botcmd(pattern=r".*", prefixed=False)
     def wildcard(self, mess, match):
         """wildcard"""
+
+        if mess.body.strip().startswith("!"):
+            return "wildcard ignoring command"
 
         # Create a unique filename, even if multiple per second.
         # TODO: a fancier implementation would only use the "count" if there
@@ -52,6 +55,5 @@ class Notes(BotPlugin):
             # FIXME: better message, re-raise error?
             return "error with temp file: %s" % str(e)
 
-        return "wildcard! '" + match.group(1) \
-                + "' body is '" + mess.body + "' at " + filename
+        return "wildcard body is '" + mess.body + "' at " + filename
 

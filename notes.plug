@@ -1,0 +1,12 @@
+[Core]
+name = notes
+module = notes
+
+[Documentation]
+description = Save all entered text as timestamped note files (1 per message)
+
+[Python]
+version = 3
+
+[Errbot]
+
